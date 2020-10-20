@@ -75,6 +75,8 @@
                                 <span class="image main"><img src="/img/blogs/IMDB_pic.png" alt="" /></span>
                             
                             
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
 
 
 <div id="imdb-ratings-differences-between-directors" class="section level1">
@@ -82,7 +84,8 @@
 <p>I explore whether the mean IMDB rating for Steven Spielberg and Tim Burton are the same or not.
 First, we load the data from the csv file and examine its structure:</p>
 <pre class="r"><code>movies &lt;- read_csv(here::here(&quot;data&quot;, &quot;movies.csv&quot;)) #load data
-glimpse(movies) #examine the structure</code></pre>
+
+glimpse(movies)  #examine the structure</code></pre>
 <pre><code>## Rows: 2,961
 ## Columns: 11
 ## $ title               &lt;chr&gt; &quot;Avatar&quot;, &quot;Titanic&quot;, &quot;Jurassic World&quot;, &quot;The Aveng…
@@ -111,13 +114,103 @@ Spielberg_Burton &lt;- movies %&gt;%
             lower = mean_rating - t_critical * se_rating,
             upper = mean_rating + t_critical * se_rating
             )
-Spielberg_Burton</code></pre>
-<pre><code>## # A tibble: 2 x 9
-##   director mean_rating sd_rating count se_rating t_critical margin_of_error
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt;      &lt;dbl&gt;           &lt;dbl&gt;
-## 1 Steven …        7.57     0.695    23     0.145       2.07           0.301
-## 2 Tim Bur…        6.93     0.749    16     0.187       2.13           0.399
-## # … with 2 more variables: lower &lt;dbl&gt;, upper &lt;dbl&gt;</code></pre>
+
+Spielberg_Burton %&gt;% 
+  kable %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+director
+</th>
+<th style="text-align:right;">
+mean_rating
+</th>
+<th style="text-align:right;">
+sd_rating
+</th>
+<th style="text-align:right;">
+count
+</th>
+<th style="text-align:right;">
+se_rating
+</th>
+<th style="text-align:right;">
+t_critical
+</th>
+<th style="text-align:right;">
+margin_of_error
+</th>
+<th style="text-align:right;">
+lower
+</th>
+<th style="text-align:right;">
+upper
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Steven Spielberg
+</td>
+<td style="text-align:right;">
+7.57
+</td>
+<td style="text-align:right;">
+0.695
+</td>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:right;">
+0.145
+</td>
+<td style="text-align:right;">
+2.07
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+7.27
+</td>
+<td style="text-align:right;">
+7.87
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tim Burton
+</td>
+<td style="text-align:right;">
+6.93
+</td>
+<td style="text-align:right;">
+0.749
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+0.187
+</td>
+<td style="text-align:right;">
+2.13
+</td>
+<td style="text-align:right;">
+0.399
+</td>
+<td style="text-align:right;">
+6.53
+</td>
+<td style="text-align:right;">
+7.33
+</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>#plot confidence interval IMBD rating Burton and Spielberg
 ggplot(Spielberg_Burton, aes(x = mean_rating, y = reorder(director, mean_rating)))+
   #adding the average point on each interval
@@ -156,11 +249,25 @@ test_diff &lt;- movies %&gt;%
   calculate(stat = &quot;diff in means&quot;, c(&quot;Steven Spielberg&quot;, &quot;Tim Burton&quot;)) %&gt;% 
   get_p_value(test_diff, direction = &quot;two-sided&quot;)
 
-null_dist_2</code></pre>
-<pre><code>## # A tibble: 1 x 1
-##   p_value
-##     &lt;dbl&gt;
-## 1   0.006</code></pre>
+null_dist_2 %&gt;% 
+  kable %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+p_value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.01
+</td>
+</tr>
+</tbody>
+</table>
 <p>In conclusion, the results of the p-value (1%) is lower than the significance level (5%). Hence, we reject the null hypothesis and there is enough statistical evidence to say that the mean of IMBD rating for Steven Spielberg’s films is different from the mean for Tim Burton’s films.</p>
 </div>
 

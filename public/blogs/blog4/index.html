@@ -75,6 +75,8 @@
                                 <span class="image main"><img src="/img/blogs/climate_pic.jpg" alt="" /></span>
                             
                             
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
 
 
 <div id="climate-change-and-temperature-anomalies" class="section level1">
@@ -193,11 +195,55 @@ ggplot(average_annual_anomaly, aes(x= Year, y= annual_average_delta))+
 
 #print out formula_CI
 formula_ci %&gt;% 
-  select(mean_delta, sd_delta, count, se_delta, CI_lower, CI_upper)</code></pre>
-<pre><code>## # A tibble: 1 x 6
-##   mean_delta sd_delta count se_delta CI_lower CI_upper
-##        &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1      0.966    0.262   103   0.0259    0.923     1.01</code></pre>
+  select(mean_delta, sd_delta, count, se_delta, CI_lower, CI_upper) %&gt;% 
+  kable %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+mean_delta
+</th>
+<th style="text-align:right;">
+sd_delta
+</th>
+<th style="text-align:right;">
+count
+</th>
+<th style="text-align:right;">
+se_delta
+</th>
+<th style="text-align:right;">
+CI_lower
+</th>
+<th style="text-align:right;">
+CI_upper
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.966
+</td>
+<td style="text-align:right;">
+0.262
+</td>
+<td style="text-align:right;">
+103
+</td>
+<td style="text-align:right;">
+0.026
+</td>
+<td style="text-align:right;">
+0.923
+</td>
+<td style="text-align:right;">
+1.01
+</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code># use the infer package to construct a 95% CI for delta
 library(infer)  #include this library in the loadlibraries section
 set.seed(1234)
@@ -217,11 +263,31 @@ confidence_interval &lt;- bootstrap_comparison %&gt;%
   get_ci(level = 0.95, type = &quot;percentile&quot;)
   
 #print confidence interval
-confidence_interval</code></pre>
-<pre><code>## # A tibble: 1 x 2
-##   lower_ci upper_ci
-##      &lt;dbl&gt;    &lt;dbl&gt;
-## 1    0.917     1.02</code></pre>
+confidence_interval %&gt;% 
+  kable %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+lower_ci
+</th>
+<th style="text-align:right;">
+upper_ci
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.917
+</td>
+<td style="text-align:right;">
+1.02
+</td>
+</tr>
+</tbody>
+</table>
 <p>The first and third exhibit - weather anomalies and average yearly anomalies - demonstrate how temperatures have changed for the past 140 years. It shows that temperatures, during this period, have been gradually increasing. During the period, the difference of temperatures between the actual and the base period ranged from around -0.2 to about +1.1 degrees, showing a sharper increase from 1970 onwards. The second exhibit displays that although there are some slight disparities across months, the trendline is very similar for all. The third exhibit portraits a similar conclusion. Through the density plot function, it is possible to notice that each curve is repetitively shifting to the right, i.e. the difference between period’s temperatures and base period’s have been increasing. Lastly, the confidence intervals showcase that, on average, the temperature is approximately +0.966 degrees than the temperature of the base period. Additionally, the data allows us to claim that under a 95% confidence interval the values of delta will range between (+0.923 and +1.01).</p>
 </div>
 </div>

@@ -42,6 +42,7 @@ library(tidyquant)
 library(infer)
 library(openintro)
 library(tidyquant)
+library(kableExtra)
 ```
 
 # IMDB ratings: Differences between directors
@@ -51,7 +52,8 @@ First, we load the data from the csv file and examine its structure:
 
 ```{r}
 movies <- read_csv(here::here("data", "movies.csv")) #load data
-glimpse(movies) #examine the structure
+
+glimpse(movies)  #examine the structure
 ```
 
 As shown in the table above, the movies data has 11 columns, including the name of the film, genre, director, year, duration….
@@ -72,7 +74,10 @@ Spielberg_Burton <- movies %>%
             lower = mean_rating - t_critical * se_rating,
             upper = mean_rating + t_critical * se_rating
             )
-Spielberg_Burton
+
+Spielberg_Burton %>% 
+  kable %>% 
+  kable_styling()
 ```
 
 ```{r}
@@ -122,7 +127,9 @@ null_dist_2 <- movies %>%
   calculate(stat = "diff in means", c("Steven Spielberg", "Tim Burton")) %>% 
   get_p_value(test_diff, direction = "two-sided")
 
-null_dist_2
+null_dist_2 %>% 
+  kable %>% 
+  kable_styling()
 ```
 
 In conclusion, the results of the p-value (1%) is lower than the significance level (5%). Hence, we reject the null hypothesis and there is enough statistical evidence to say that the mean of IMBD rating for Steven Spielberg’s films is different from the mean for Tim Burton’s films.

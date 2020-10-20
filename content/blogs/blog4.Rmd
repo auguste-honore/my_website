@@ -41,6 +41,7 @@ library(tidyquant)
 library(infer)
 library(openintro)
 library(tidyquant)
+library(kableExtra)
 ```
 
 # Climate change and temperature anomalies 
@@ -197,7 +198,9 @@ formula_ci <- comparison %>%
 
 #print out formula_CI
 formula_ci %>% 
-  select(mean_delta, sd_delta, count, se_delta, CI_lower, CI_upper)
+  select(mean_delta, sd_delta, count, se_delta, CI_lower, CI_upper) %>% 
+  kable %>% 
+  kable_styling()
 ```
 
 
@@ -221,7 +224,9 @@ confidence_interval <- bootstrap_comparison %>%
   get_ci(level = 0.95, type = "percentile")
   
 #print confidence interval
-confidence_interval
+confidence_interval %>% 
+  kable %>% 
+  kable_styling()
 
 ```
 

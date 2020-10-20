@@ -75,6 +75,8 @@
                                 <span class="image main"><img src="/img/blogs/omega_pic.jpg" alt="" /></span>
                             
                             
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
 
 
 <div id="omega-group-plc--pay-discrimination" class="section level1">
@@ -84,22 +86,693 @@
 <div id="loading-the-data" class="section level2">
 <h2>Loading the data</h2>
 <pre class="r"><code>omega &lt;- read_csv(here::here(&quot;data&quot;, &quot;omega.csv&quot;))
-glimpse(omega) # examine the data frame</code></pre>
+
+glimpse(omega) %&gt;% 
+  kable %&gt;% 
+  kable_styling() # examine the data frame</code></pre>
 <pre><code>## Rows: 50
 ## Columns: 3
 ## $ salary     &lt;dbl&gt; 81894, 69517, 68589, 74881, 65598, 76840, 78800, 70033, 63…
 ## $ gender     &lt;chr&gt; &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;m…
 ## $ experience &lt;dbl&gt; 16, 25, 15, 33, 16, 19, 32, 34, 1, 44, 7, 14, 33, 19, 24, …</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+salary
+</th>
+<th style="text-align:left;">
+gender
+</th>
+<th style="text-align:right;">
+experience
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+81894
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+69517
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+25
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+68589
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+74881
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+33
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+65598
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+76840
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+19
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+78800
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+32
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+70033
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+34
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+63535
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+77872
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+44
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+66526
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+75706
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+14
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+78491
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+33
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+74468
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+19
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+71787
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+24
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+54768
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+67558
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+17
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+80863
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+19
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+80038
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+21
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+84576
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+31
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+61679
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+83338
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+35
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+77150
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+20
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+73231
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+23
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+58791
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+63226
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+63948
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+72302
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+47033
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+73437
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+29
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+66733
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+55490
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+62813
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+64670
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+78800
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+21
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+59719
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+70343
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+67867
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+62194
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+64567
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+69105
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+18
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+64670
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+56418
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+73643
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+19
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+51983
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+74056
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+66114
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+72612
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+20
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+54768
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+62813
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="relationship-salary---gender" class="section level2">
 <h2>Relationship Salary - Gender ?</h2>
 <p>The data frame <code>omega</code> contains the salaries for the sample of 50 executives in the company.
 We can calculate summary statistics on salary by gender.</p>
 <pre class="r"><code># Summary Statistics of salary by gender
-mosaic::favstats (salary ~ gender, data=omega)</code></pre>
-<pre><code>##   gender   min    Q1 median    Q3   max  mean   sd  n missing
-## 1 female 47033 60338  64618 70033 78800 64543 7567 26       0
-## 2   male 54768 68331  74675 78568 84576 73239 7463 24       0</code></pre>
+mosaic::favstats (salary ~ gender, data=omega) %&gt;% 
+  kable %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+gender
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+Q1
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+Q3
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:right;">
+sd
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+missing
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+47033
+</td>
+<td style="text-align:right;">
+60338
+</td>
+<td style="text-align:right;">
+64618
+</td>
+<td style="text-align:right;">
+70033
+</td>
+<td style="text-align:right;">
+78800
+</td>
+<td style="text-align:right;">
+64543
+</td>
+<td style="text-align:right;">
+7567
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+54768
+</td>
+<td style="text-align:right;">
+68331
+</td>
+<td style="text-align:right;">
+74675
+</td>
+<td style="text-align:right;">
+78568
+</td>
+<td style="text-align:right;">
+84576
+</td>
+<td style="text-align:right;">
+73239
+</td>
+<td style="text-align:right;">
+7463
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code># Dataframe with two rows (male-female) and having as columns gender, mean, SD, sample size, 
 my_omega &lt;- omega %&gt;% 
   group_by(gender) %&gt;% 
@@ -114,17 +787,106 @@ my_omega &lt;- omega %&gt;%
             CI_lower = mean_salary - margin_error,
             CI_upper = mean_salary + margin_error)
 
-my_omega</code></pre>
-<pre><code>## # A tibble: 2 x 9
-##   gender mean_salary sd_salary count t_critical se_salary margin_error CI_lower
-##   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;    &lt;dbl&gt;
-## 1 female      64543.     7567.    26       2.06     1484.        3056.   61486.
-## 2 male        73239.     7463.    24       2.07     1523.        3151.   70088.
-## # … with 1 more variable: CI_upper &lt;dbl&gt;</code></pre>
+my_omega %&gt;% 
+  kable %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+gender
+</th>
+<th style="text-align:right;">
+mean_salary
+</th>
+<th style="text-align:right;">
+sd_salary
+</th>
+<th style="text-align:right;">
+count
+</th>
+<th style="text-align:right;">
+t_critical
+</th>
+<th style="text-align:right;">
+se_salary
+</th>
+<th style="text-align:right;">
+margin_error
+</th>
+<th style="text-align:right;">
+CI_lower
+</th>
+<th style="text-align:right;">
+CI_upper
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+64543
+</td>
+<td style="text-align:right;">
+7567
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:right;">
+2.06
+</td>
+<td style="text-align:right;">
+1484
+</td>
+<td style="text-align:right;">
+3056
+</td>
+<td style="text-align:right;">
+61486
+</td>
+<td style="text-align:right;">
+67599
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+73239
+</td>
+<td style="text-align:right;">
+7463
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+2.07
+</td>
+<td style="text-align:right;">
+1523
+</td>
+<td style="text-align:right;">
+3151
+</td>
+<td style="text-align:right;">
+70088
+</td>
+<td style="text-align:right;">
+76390
+</td>
+</tr>
+</tbody>
+</table>
 <p>As we can see from the data above the confidence intervals for male and female do not overlap. This means that there is a statistically difference between the salary of men and women at Omega.</p>
 <p>We can also run a hypothesis testing, assuming as a null hypothesis that the mean difference in salaries is zero, or that, on average, men and women make the same amount of money.</p>
 <pre class="r"><code># hypothesis testing using t.test() 
-t.test(salary~gender, omega)</code></pre>
+t.test(salary~gender, omega) </code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
@@ -149,18 +911,32 @@ null_omega &lt;- omega %&gt;%
   calculate(&quot;diff in means&quot;, order = c(&quot;male&quot;, &quot;female&quot;)) %&gt;% 
   get_p_value(diff_omega, direction = &quot;two-sided&quot;)
 
-null_omega</code></pre>
-<pre><code>## # A tibble: 1 x 1
-##   p_value
-##     &lt;dbl&gt;
-## 1  0.0002</code></pre>
+null_omega %&gt;% 
+  kable %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+p_value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
 <p>Our p-value is extremely small (close to 0). Therefore, we can reject the null hypothesis that the mean difference in salary between male and female is 0.</p>
 </div>
 <div id="relationship-experience---gender" class="section level2">
 <h2>Relationship Experience - Gender?</h2>
 <p>At the board meeting, someone raised the issue that there was indeed a substantial difference between male and female salaries, but that this was attributable to other reasons such as differences in experience. A questionnaire send out to the 50 executives in the sample reveals that the average experience of the men is approximately 21 years, whereas the women only have about 7 years experience on average (see table below).</p>
 <pre class="r"><code># Summary Statistics of salary by gender
-favstats (experience ~ gender, data=omega)</code></pre>
+favstats (experience ~ gender, data=omega) </code></pre>
 <pre><code>##   gender min    Q1 median   Q3 max  mean    sd  n missing
 ## 1 female   0  0.25    3.0 14.0  29  7.38  8.51 26       0
 ## 2   male   1 15.75   19.5 31.2  44 21.12 10.92 24       0</code></pre>
@@ -178,15 +954,105 @@ favstats (experience ~ gender, data=omega)</code></pre>
             CI_lower = mean_exp - margin_error,
             CI_upper = mean_exp + margin_error)
 
-my_exp</code></pre>
-<pre><code>## # A tibble: 2 x 9
-##   gender mean_exp sd_exp count t_critical se_exp margin_error CI_lower CI_upper
-##   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1 female     7.38   8.51    26       2.06   1.67         3.44     3.95     10.8
-## 2 male      21.1   10.9     24       2.07   2.23         4.61    16.5      25.7</code></pre>
+my_exp %&gt;% 
+  kable %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+gender
+</th>
+<th style="text-align:right;">
+mean_exp
+</th>
+<th style="text-align:right;">
+sd_exp
+</th>
+<th style="text-align:right;">
+count
+</th>
+<th style="text-align:right;">
+t_critical
+</th>
+<th style="text-align:right;">
+se_exp
+</th>
+<th style="text-align:right;">
+margin_error
+</th>
+<th style="text-align:right;">
+CI_lower
+</th>
+<th style="text-align:right;">
+CI_upper
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+7.38
+</td>
+<td style="text-align:right;">
+8.51
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:right;">
+2.06
+</td>
+<td style="text-align:right;">
+1.67
+</td>
+<td style="text-align:right;">
+3.44
+</td>
+<td style="text-align:right;">
+3.95
+</td>
+<td style="text-align:right;">
+10.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+21.12
+</td>
+<td style="text-align:right;">
+10.92
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+2.07
+</td>
+<td style="text-align:right;">
+2.23
+</td>
+<td style="text-align:right;">
+4.61
+</td>
+<td style="text-align:right;">
+16.52
+</td>
+<td style="text-align:right;">
+25.7
+</td>
+</tr>
+</tbody>
+</table>
 <p>As we can see from the data above the confidence intervals for male and female do not overlap. This means that there is a statistically difference between the experience of men and women at Omega.</p>
 <pre class="r"><code># hypothesis testing using t.test() 
-t.test(experience~gender, omega)</code></pre>
+t.test(experience~gender, omega) </code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
@@ -211,11 +1077,25 @@ null_exp &lt;- omega %&gt;%
   calculate(&quot;diff in means&quot;, order = c(&quot;male&quot;, &quot;female&quot;)) %&gt;% 
   get_p_value(diff_exp, direction = &quot;two-sided&quot;)
 
-null_exp</code></pre>
-<pre><code>## # A tibble: 1 x 1
-##   p_value
-##     &lt;dbl&gt;
-## 1       0</code></pre>
+null_exp %&gt;% 
+  kable %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+p_value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
 <p>Our p-value is extremely small (close to 0). Therefore, we can reject the null hypothesis that the mean difference in experience between male and female is 0. This endager our conclusion that there is a difference in salary caused by the gender. One could argue that male are paid more because of their difference in experience. We would need to control for experience to alleviate this omitted variable bias.</p>
 </div>
 <div id="relationship-salary---experience" class="section level2">
