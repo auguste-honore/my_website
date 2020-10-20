@@ -1,0 +1,216 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="description" content="Hi, my name is Auguste. I am currently studying finance at London Business School.">
+	<meta name="author" content="Auguste">
+	<meta name="generator" content="Hugo 0.75.1" />
+	<title>IMDB ratings &middot; Portfolio website for Auguste Honore</title>
+	<!-- Stylesheets -->
+	
+	<link rel="stylesheet" href="/css/main.css"/>
+	
+	
+
+	
+
+	<!-- Custom Fonts -->
+	<link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="js/ie/html5shiv.js"></script>
+	<script src="js/ie/html5shiv.jsrespond.min.js"></script>
+	<![endif]-->
+</head>
+
+    <body>
+
+    <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+    <header id="header" class="alt">
+        <a href="/" class="logo"><strong>Auguste Honore</strong> <span>Portfolio</span></a>
+        <nav>
+            <a href="#menu">Menu</a>
+        </nav>
+    </header>
+
+<!-- Menu -->
+    <nav id="menu">
+        <ul class="links">
+            
+                <li><a href="/">Home</a></li>
+            
+                <li><a href="/blogs">Blogs</a></li>
+            
+
+        </ul>
+        <ul class="actions vertical">
+            
+            
+        </ul>
+    </nav>
+
+        <!-- Main -->
+            <div id="main" class="alt">
+
+                
+                    <section id="one">
+                        <div class="inner">
+                            <header class="major">
+                                <h1>IMDB ratings</h1>
+                            </header>
+                            
+                                <span class="image main"><img src="/img/blogs/IMDB_pic.png" alt="" /></span>
+                            
+                            
+
+
+<div id="imdb-ratings-differences-between-directors" class="section level1">
+<h1>IMDB ratings: Differences between directors</h1>
+<p>I explore whether the mean IMDB rating for Steven Spielberg and Tim Burton are the same or not.
+First, we load the data from the csv file and examine its structure:</p>
+<pre class="r"><code>movies &lt;- read_csv(here::here(&quot;data&quot;, &quot;movies.csv&quot;)) #load data
+glimpse(movies) #examine the structure</code></pre>
+<pre><code>## Rows: 2,961
+## Columns: 11
+## $ title               &lt;chr&gt; &quot;Avatar&quot;, &quot;Titanic&quot;, &quot;Jurassic World&quot;, &quot;The Aveng…
+## $ genre               &lt;chr&gt; &quot;Action&quot;, &quot;Drama&quot;, &quot;Action&quot;, &quot;Action&quot;, &quot;Action&quot;, …
+## $ director            &lt;chr&gt; &quot;James Cameron&quot;, &quot;James Cameron&quot;, &quot;Colin Trevorro…
+## $ year                &lt;dbl&gt; 2009, 1997, 2015, 2012, 2008, 1999, 1977, 2015, 2…
+## $ duration            &lt;dbl&gt; 178, 194, 124, 173, 152, 136, 125, 141, 164, 93, …
+## $ gross               &lt;dbl&gt; 7.61e+08, 6.59e+08, 6.52e+08, 6.23e+08, 5.33e+08,…
+## $ budget              &lt;dbl&gt; 2.37e+08, 2.00e+08, 1.50e+08, 2.20e+08, 1.85e+08,…
+## $ cast_facebook_likes &lt;dbl&gt; 4834, 45223, 8458, 87697, 57802, 37723, 13485, 92…
+## $ votes               &lt;dbl&gt; 886204, 793059, 418214, 995415, 1676169, 534658, …
+## $ reviews             &lt;dbl&gt; 3777, 2843, 1934, 2425, 5312, 3917, 1752, 1752, 3…
+## $ rating              &lt;dbl&gt; 7.9, 7.7, 7.0, 8.1, 9.0, 6.5, 8.7, 7.5, 8.5, 7.2,…</code></pre>
+<p>As shown in the table above, the movies data has 11 columns, including the name of the film, genre, director, year, duration….</p>
+<p>Next, we estimate a 95% confidence interval for the IMBD ratings for each director. Then we plot the results.</p>
+<pre class="r"><code>#filter for Burton and Spielberg
+Spielberg_Burton &lt;- movies %&gt;% 
+  filter(director == &quot;Tim Burton&quot; | director == &quot;Steven Spielberg&quot;) %&gt;% 
+  group_by(director) %&gt;% 
+  summarise(mean_rating = mean(rating),
+            sd_rating = sd(rating),
+            count = n(),
+            se_rating = sd_rating/sqrt(count),
+            t_critical = qt(0.975, count-1), 
+            margin_of_error = t_critical * se_rating,
+            lower = mean_rating - t_critical * se_rating,
+            upper = mean_rating + t_critical * se_rating
+            )
+Spielberg_Burton</code></pre>
+<pre><code>## # A tibble: 2 x 9
+##   director mean_rating sd_rating count se_rating t_critical margin_of_error
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt;      &lt;dbl&gt;           &lt;dbl&gt;
+## 1 Steven …        7.57     0.695    23     0.145       2.07           0.301
+## 2 Tim Bur…        6.93     0.749    16     0.187       2.13           0.399
+## # … with 2 more variables: lower &lt;dbl&gt;, upper &lt;dbl&gt;</code></pre>
+<pre class="r"><code>#plot confidence interval IMBD rating Burton and Spielberg
+ggplot(Spielberg_Burton, aes(x = mean_rating, y = reorder(director, mean_rating)))+
+  #adding the average point on each interval
+  geom_point()+
+  #creating the confidence interval
+  geom_errorbar(aes(xmin = lower, xmax = upper, colour = director), width = 0.1, size = 1.2)+
+  #adding numbers 
+  geom_text(aes(label = round(mean_rating, 2)), vjust = -1)+
+  geom_text(aes(label = round(lower, 2)), vjust = -1, hjust = 4.5)+
+  geom_text(aes(label = round(upper, 2)), vjust = -1, hjust = -3.5)+
+  #adding the grey area
+  geom_rect(xmin = 7.27, xmax = 7.33, ymin = 0, ymax = 10, alpha = 0.2)+
+  #formatting and titles
+  theme_bw()+
+  theme(legend.position = &quot;none&quot;)+
+  labs(title = &quot;Do Spielberg and Burton have the same IMDB ratings&quot;, 
+       subtitle = &quot;95% confidence intervals overlap&quot;, 
+       x = &quot;Mean IMDB ratings&quot;, 
+       y = &quot;&quot;)</code></pre>
+<p><img src="/blogs/blog3_files/figure-html/unnamed-chunk-3-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>Looking at the graph, Burton’s interval of confidence goes from [6.53, 7.33], while Spielberg’s interval goes from [7.27, 7.87], i.e., the intervals between the rating of the two directors overlap. Hence, there is no enough statistical evidence to say that the rating between the two director difers. Hence, we suggest to make a mean difference test to determine if the mean of IMBD ratings of the two directors are different.</p>
+<p>First, we need to initialize the test, which we will save as test_diff.</p>
+<pre class="r"><code>#Initialize the test
+test_diff &lt;- movies %&gt;%
+  filter(director == &quot;Steven Spielberg&quot; | #Filter the movies directed by Spielberg and Burton
+           director == &quot;Tim Burton&quot;) %&gt;% 
+  specify(rating ~ director) %&gt;%
+  calculate(stat = &quot;diff in means&quot;, order = c(&quot;Steven Spielberg&quot;, &quot;Tim Burton&quot;))</code></pre>
+<p>Now that the test is initialized and the null distribution formed. Hence, we can also calculate the p-value for our hypothesis test using the function.</p>
+<pre class="r"><code>null_dist_2 &lt;- movies %&gt;%
+  filter(director == &quot;Steven Spielberg&quot; | #Filter the movies directed by Spielberg and Burton
+           director == &quot;Tim Burton&quot;) %&gt;% 
+  specify(rating ~ director) %&gt;%
+  hypothesize(null = &quot;independence&quot;) %&gt;%
+  generate(reps = 1000, type = &quot;permute&quot;) %&gt;%
+  calculate(stat = &quot;diff in means&quot;, c(&quot;Steven Spielberg&quot;, &quot;Tim Burton&quot;)) %&gt;% 
+  get_p_value(test_diff, direction = &quot;two-sided&quot;)
+
+null_dist_2</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1   0.006</code></pre>
+<p>In conclusion, the results of the p-value (1%) is lower than the significance level (5%). Hence, we reject the null hypothesis and there is enough statistical evidence to say that the mean of IMBD rating for Steven Spielberg’s films is different from the mean for Tim Burton’s films.</p>
+</div>
+
+                        </div>
+                    </section>
+            <!-- Disqus Inject -->
+                
+            </div>
+            
+        <!-- Footer -->
+            
+                <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <ul class="icons">
+                
+                    <li><a href="https://github.com/auguste-honore" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                
+                    <li><a href="https://www.linkedin.com/in/augustehonore/" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+                
+            </ul>
+            <ul class="copyright">
+                <li>&copy; Auguste Honore</li>
+                
+                <li>Design:  <a href="https://www.html5up.net">HTML5 UP</a></li>
+                
+            </ul>
+        </div>
+    </footer>
+
+            
+        </div>
+
+    <!-- Scripts -->
+        <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+
+    
+
+    <!-- Main JS -->
+    <script src="/js/main.js"></script>
+
+    
+
+    
+
+    </body>
+</html>
